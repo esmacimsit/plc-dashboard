@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-public class ExampleController {
+public class PlcController {
     @Autowired // dependency (bean) injection
     private PlcInfoService plcInfoService; // field injection
     // you dont have to write @Autowired if its constructor injection (other type is setter injection)
