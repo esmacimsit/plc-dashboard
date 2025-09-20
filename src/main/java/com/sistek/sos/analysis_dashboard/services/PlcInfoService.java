@@ -26,8 +26,8 @@ public class PlcInfoService {
 //        return plcInfoRepository.findById(plcId).orElse(null);
 //    } // get primary key if its found
 
-    public PlcInfo getPlcId() {
-        return plcInfoRepository.findAll().get(0);
+    public String getPlcId() {
+        return plcInfoRepository.findAll().get(0).getPlcId(); // return plcid from first row
     } // get plc_id cell
 
     public String getPlcStatus() {

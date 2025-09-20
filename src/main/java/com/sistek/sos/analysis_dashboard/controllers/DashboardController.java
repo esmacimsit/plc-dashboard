@@ -16,7 +16,7 @@ public class DashboardController {
         // Fetch the all exist plc information
 //        List<PlcInfo> plcInfo = plcInfoService.getPlcInfo(); // fetch filtered or all plcs
         model.addAttribute("plcId", plcInfoService.getPlcId()); // get as ${plcId} on thymeleaf
-        model.addAttribute("plcInfo", plcInfoService.getPlcStatus());
+        model.addAttribute("plcStatus", plcInfoService.getPlcStatus());
 
         return "dashboard"; // render on dashboard.html
     }
