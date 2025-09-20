@@ -23,5 +23,4 @@ public class LineInfoService {
     public LineInfo getLineInfoById(String lineId) {
         return lineInfoRepository.findById(lineId).orElse(null);
     }
-
 }
