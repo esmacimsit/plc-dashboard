@@ -39,7 +39,6 @@ public class DashboardController {
         model.addAttribute("lineTexts", lineTexts);
 
         Map<String, List<BarcodeData>> grouped = barcodeDataService.getBarcodesByLine();
-
         model.addAttribute("groupedBarcodes", grouped);
 
         return "dashboard"; // render on dashboard.html

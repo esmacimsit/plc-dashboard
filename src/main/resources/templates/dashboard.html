@@ -14,5 +14,18 @@
     <li th:each="text : ${lineTexts}" th:text="${text}"></li>
 </ul>
 
+<!-- groupedBarcodes: Map<String, List<BarcodeData>> -->
+<div th:if="${groupedBarcodes != null}">
+    <div th:each="e : ${groupedBarcodes.entrySet()}">
+        <h3 th:text="'Line ' + ${e.getKey()}">Line</h3>
+        <ul>
+            <li th:each="b : ${e.getValue()}">
+                <span th:text="${b.barcode}">BARCODE</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
 </body>
 </html>
