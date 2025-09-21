@@ -19,11 +19,3 @@ public class BarcodeDataId implements Serializable { // a marker interface (empt
     @Column(name = "line_id")
     private String lineId;
 }
-
-//        // Getter ve Setter'lar
-//        public Long getDepartmentId() { return departmentId; }
-//        public void setDepartmentId(Long departmentId) { this.departmentId = departmentId; }
-//
-//        public Long getEmployeeId() { return employeeId; }
-//        public void setLongEmployeeId(Long employeeId) { this.employeeId = employeeId; }
-//}

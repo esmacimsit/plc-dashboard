@@ -30,4 +30,12 @@ public class BarcodeData {
 
     @Column(name = "api_result", nullable = false)
     private String apiResult;
+
+    public String getLineId() {
+        return barcodeId != null ? barcodeId.getLineId() : null;
+    }
+
+//    public String getBarcode() {
+//        return barcodeId != null ? barcodeId.getBarcode() : null;
+//    }
 }

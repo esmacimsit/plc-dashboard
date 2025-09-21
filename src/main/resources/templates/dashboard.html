@@ -9,9 +9,10 @@
 
 <p>PLC ID: <span th:text="${plcId}"></span></p>
 <p>PLC Status: <span th:text="${plcStatus}"></span></p>
-<p>Line Names: <span th:text="${lineNames}"></span></p>
-
+<p>Line Texts:</p>
+<ul>
+    <li th:each="text : ${lineTexts}" th:text="${text}"></li>
+</ul>
 
 </body>
-
 </html>

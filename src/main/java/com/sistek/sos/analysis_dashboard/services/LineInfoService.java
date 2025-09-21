@@ -5,6 +5,7 @@ import com.sistek.sos.analysis_dashboard.repositories.LineInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,20 +30,28 @@ public class LineInfoService {
         return lineInfoRepository.findAllByOrderByLineIdAsc();
     } // ordered list
 
-    public List<String> getLineNamesOrdered(List<LineInfo> lines) {
-        return lines.stream() // stream started
-                .map(LineInfo::getLineName) // mapping: fetch lineName
-                .collect(Collectors.toList()); // create new list
+//    public List<String> getLineNames(List<LineInfo> lines) {
+//        return lines.stream() // stream started
+//                .map(LineInfo::getLineName) // mapping: fetch lineName
+//                .collect(Collectors.toList()); // create new list
+//    }
+
+    public List<String> getLineNamesAndStatus(List<LineInfo> lines) {
+        DateTimeFormatter ft = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
+
+        return lines.stream()
+                .map(line -> {
+                    if ("RUN".equals(line.getStatus())) {
+                        return line.getLineName() + " - running...";
+                    } else if ("STOP".equals(line.getStatus())) {
+                        return line.getLineName() + " - stopped at " + ft.format(line.getLastStatusDate());
+                    } else {
+                        return line.getLineName() + " - unknown";
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
-//    public String getLineStatus(LineInfo line) {
-//        if ("RUN".equals(line.getStatus())) {
-//            return "running...";
-//        } else {
-//            DateTimeFormatter ft = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
-//            return "stopped at " + ft.format(line.getLastStatusDate());
-//        }
-//    }
 
 
 }
