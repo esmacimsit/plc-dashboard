@@ -1,15 +1,22 @@
 package com.sistek.sos.analysis_dashboard.controllers;
 
+import com.sistek.sos.analysis_dashboard.entities.LineInfo;
+import com.sistek.sos.analysis_dashboard.services.LineInfoService;
 import com.sistek.sos.analysis_dashboard.services.PlcInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class DashboardController {
     @Autowired // dependency (bean) injection
     private PlcInfoService plcInfoService; // field injection
+
+    @Autowired
+    private LineInfoService lineInfoService; // inject another service
     // you dont have to write @Autowired if its constructor injection (other type is setter injection)
     @GetMapping("/dashboard") // if /example url triggered by GET request this method runs
     public String dashboardPage(Model model) { // return by dynamic status
@@ -17,6 +24,12 @@ public class DashboardController {
 //        List<PlcInfo> plcInfo = plcInfoService.getPlcInfo(); // fetch filtered or all plcs
         model.addAttribute("plcId", plcInfoService.getPlcId()); // get as ${plcId} on thymeleaf
         model.addAttribute("plcStatus", plcInfoService.getPlcStatus());
+//        model.addAttribute("lineAsc", lineInfoService.getAllLinesAsc());
+
+        List<LineInfo> lines = lineInfoService.getAllLinesAsc(); // fetch all ordered
+        List<String> lineNames = lineInfoService.getLineNamesOrdered(lines); // fetch line names
+
+        model.addAttribute("lineNames", lineNames);
 
         return "dashboard"; // render on dashboard.html
     }

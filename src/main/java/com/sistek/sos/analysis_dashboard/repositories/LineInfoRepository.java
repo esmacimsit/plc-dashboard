@@ -10,4 +10,5 @@ import java.util.List;
 public interface LineInfoRepository extends JpaRepository<LineInfo, String> {
     List<LineInfo> findAllByOrderByLineIdAsc(); // select * from line_info order by line_id asc;
 
+
 }
