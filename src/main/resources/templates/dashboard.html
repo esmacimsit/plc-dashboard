@@ -14,15 +14,16 @@
     <li th:each="text : ${lineTexts}" th:text="${text}"></li>
 </ul>
 
-<!-- groupedBarcodes: Map<String, List<BarcodeData>> -->
-<div th:if="${groupedBarcodes != null}">
-    <div th:each="e : ${groupedBarcodes.entrySet()}">
-        <h3 th:text="'Line ' + ${e.getKey()}">Line</h3>
-        <ul>
-            <li th:each="b : ${e.getValue()}">
-                <span th:text="${b.barcode}">BARCODE</span>
-            </li>
-        </ul>
+<div th:each="group : ${groupedBarcodes}" class="line-group">
+    <h2>Hat ID: <span th:text="${group.key}">Line ID</span></h2>
+
+    <div th:each="barcode : ${group.value}" class="barcode-item">
+        <strong>Barcode:</strong> <span th:text="${barcode.barcodeId.barcode}">Barkod</span><br>
+        <strong>Line ID:</strong> <span th:text="${barcode.barcodeId.lineId}">Line ID</span><br>
+        <strong>Status:</strong> <span th:text="${barcode.status}" class="error">Status</span><br>
+        <!--        <strong>API Result:</strong> <span th:text="${barcode.apiResult}">API Result</span><br>-->
+        <!--        <strong>Last Status Date:</strong> <span th:text="${barcode.lastStatusDate}">Last Status Date</span><br>-->
+        <!--        <strong>Creation Date:</strong> <span th:text="${barcode.creDate}">Created Date</span>-->
     </div>
 </div>
 
