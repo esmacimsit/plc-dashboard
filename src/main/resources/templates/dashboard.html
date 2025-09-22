@@ -1,32 +1,196 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Barcode Error Dashboard</title>
     <meta charset="UTF-8">
-    <title>PLC Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .line-column {
+            min-width: 350px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .line-header {
+            color: white;
+            padding: 12px;
+            margin: -15px -15px 15px -15px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .running { background: #28a745; }
+        .stopped { background: #dc3545; }
+        .unknown { background: #6c757d; }
+        .barcode-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .barcode-number {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-align: center;
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .barcode-image {
+            text-align: center;
+            margin: 12px 0;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        .barcode-svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        .barcode-info {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        .status-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .no-barcodes {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .error-title {
+            color: #dc3545;
+            font-weight: bold;
+            text-align: center;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+    </style>
 </head>
-<body style="background-color:gray;">
-<h2>PLC Info Test</h2>
+<body>
+<h1>Barcode Error Dashboard</h1>
 
-<p>PLC ID: <span th:text="${plcId}"></span></p>
-<p>PLC Status: <span th:text="${plcStatus}"></span></p>
-<p>Line Texts:</p>
-<ul>
-    <li th:each="text : ${lineTexts}" th:text="${text}"></li>
-</ul>
+<div class="dashboard">
+    <div th:each="lineText, iter : ${lineTexts}" class="line-column">
+        <div class="line-header"
+             th:classappend="${lineText.contains('running')} ? 'running' : (${lineText.contains('stopped')} ? 'stopped' : 'unknown')">
+            <h3 style="margin:0;" th:text="${lineText}"></h3>
+        </div>
 
-<div th:each="group : ${groupedBarcodes}" class="line-group">
-    <h2>Hat ID: <span th:text="${group.key}">Line ID</span></h2>
-
-    <div th:each="barcode : ${group.value}" class="barcode-item">
-        <strong>Barcode:</strong> <span th:text="${barcode.barcodeId.barcode}">Barkod</span><br>
-        <strong>Line ID:</strong> <span th:text="${barcode.barcodeId.lineId}">Line ID</span><br>
-        <strong>Status:</strong> <span th:text="${barcode.status}" class="error">Status</span><br>
-        <!--        <strong>API Result:</strong> <span th:text="${barcode.apiResult}">API Result</span><br>-->
-        <!--        <strong>Last Status Date:</strong> <span th:text="${barcode.lastStatusDate}">Last Status Date</span><br>-->
-        <!--        <strong>Creation Date:</strong> <span th:text="${barcode.creDate}">Created Date</span>-->
+        <div th:with="lineId=${iter.index + 1}">
+            <div th:if="${groupedBarcodes.containsKey(lineId.toString())}">
+                <div th:each="barcode : ${groupedBarcodes.get(lineId.toString())}"
+                     class="barcode-card">
+                    <div class="barcode-number" th:text="${barcode.barcodeId.barcode}"></div>
+                    <div class="barcode-image">
+                        <svg th:attr="data-barcode=${barcode.barcodeId.barcode}"
+                             class="barcode-svg"
+                             width="280" height="80"
+                             xmlns="http://www.w3.org/2000/svg">
+                        </svg>
+                        <div class="error-title">Barcode Error</div>
+                    </div>
+                    <div class="barcode-info">
+                        <strong>Status:</strong> <span class="status-error" th:text="${barcode.status}"></span><br>
+                        <strong>Date:</strong> <span
+                            th:text="${#temporals.format(barcode.lastStatusDate, 'dd.MM.yyyy HH:mm')}"></span><br>
+                        <strong>Error:</strong> <span style="font-size:11px; display:block; margin-top:4px;"
+                                                      th:text="${barcode.apiResult}"></span>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${groupedBarcodes.containsKey(lineId.toString())}">
+                <p class="no-barcodes">No barcodes found for this line</p>
+            </div>
+        </div>
     </div>
 </div>
 
+<script>
+    // Basit ama gerçekçi barkod generator
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.barcode-svg').forEach(function(svg) {
+            const barcodeText = svg.getAttribute('data-barcode');
+            const width = 280;
+            const height = 80;
+
+            let svgContent = '';
+
+            // Beyaz arkaplan
+            svgContent += '<rect width="100%" height="100%" fill="white" stroke="#ddd" stroke-width="1"/>';
+
+            // Barkod çizgileri
+            let x = 10;
+            const startX = x;
+
+            // Başlangıç çizgisi
+            svgContent += `<rect x="${x}" y="15" width="2" height="50" fill="black"/>`;
+            x += 3;
+
+            // Her karakter için çizgiler oluştur
+            for(let i = 0; i < barcodeText.length; i++) {
+                const charCode = barcodeText.charCodeAt(i);
+
+                // Rastgele çizgi kalınlıkları (gerçek barkod gibi)
+                const patterns = [
+                    [1,1,1,2,1,2], [2,1,1,1,1,2], [1,1,2,1,1,2], [1,1,2,2,1,1],
+                    [2,1,1,2,1,1], [1,2,1,1,1,2], [2,2,1,1,1,1], [1,2,2,1,1,1],
+                    [2,1,2,1,1,1], [1,1,1,1,2,2], [2,1,1,1,2,1], [1,1,2,1,2,1]
+                ];
+
+                const pattern = patterns[charCode % patterns.length];
+
+                pattern.forEach((width, index) => {
+                    if (index % 2 === 0) { // Siyah çizgiler
+                        svgContent += `<rect x="${x}" y="15" width="${width}" height="50" fill="black"/>`;
+                    }
+                    x += width;
+                });
+
+                // Karakter arası boşluk
+                x += 1;
+            }
+
+            // Bitiş çizgisi
+            svgContent += `<rect x="${x}" y="15" width="2" height="50" fill="black"/>`;
+            x += 3;
+
+            // Barkod numarası (altta)
+            svgContent += `<text x="${width/2}" y="75" text-anchor="middle" font-family="'Courier New', monospace" font-size="10" fill="#333">${barcodeText}</text>`;
+
+            svg.innerHTML = svgContent;
+        });
+    });
+</script>
 
 </body>
 </html>
