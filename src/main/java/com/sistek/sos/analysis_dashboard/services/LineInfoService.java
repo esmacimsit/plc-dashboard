@@ -51,4 +51,23 @@ public class LineInfoService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public long getTotalLineCount() {
+        return lineInfoRepository.count();
+    }
+
+    public long getRunningLineCount() {
+        return lineInfoRepository.countByStatusIgnoreCase("RUN");
+    }
+
+    public long getStoppedLineCount() {
+        return lineInfoRepository.countByStatusIgnoreCase("STOP");
+    }
+
+    public long countByStatus(String status) {
+        return (status == null || status.isBlank())
+                ? lineInfoRepository.count()
+                : lineInfoRepository.countByStatusIgnoreCase(status);
+    }
+
 }

@@ -10,4 +10,9 @@ import java.util.List;
 @Repository
 public interface PlcLogRepository extends JpaRepository<PlcLog, PlcLogId> {
     List<PlcLog> findAllByOrderByProcDateDesc();
+
+    long countByStatusIgnoreCase(String status);
+
+    List<PlcLog> findTop10ByOrderByProcDateDesc();
+
 }

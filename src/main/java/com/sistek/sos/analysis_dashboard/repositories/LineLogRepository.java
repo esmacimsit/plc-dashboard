@@ -10,4 +10,9 @@ import java.util.List;
 @Repository
 public interface LineLogRepository extends JpaRepository<LineLog, LineLogId> {
     List<LineLog> findAllByOrderByProcDateDesc();
+
+    long countByStatusIgnoreCase(String status);
+
+    List<LineLog> findTop10ByOrderByProcDateDesc();
+
 }

@@ -1,5 +1,6 @@
 package com.sistek.sos.analysis_dashboard.services;
 
+import com.sistek.sos.analysis_dashboard.dto.Activity;
 import com.sistek.sos.analysis_dashboard.dto.UnifiedLog;
 import com.sistek.sos.analysis_dashboard.repositories.LineLogRepository;
 import com.sistek.sos.analysis_dashboard.repositories.PlcLogRepository;
@@ -72,4 +73,45 @@ public class LogService {
                         l.getStatus()))
                 .toList();
     }
+
+    // toplam log sayısı (PLC + LINE)
+    public long getTotalLogCount() {
+        return plcLogRepository.count() + lineLogRepository.count();
+    }
+
+    // aktif hata sayısı (basit kural)
+// PLC: PASSIVE hata kabul, LINE: STOP hata kabul
+    public long getActiveErrorCount() {
+        long plcPassive = plcLogRepository.countByStatusIgnoreCase("PASSIVE");
+        long lineStop = lineLogRepository.countByStatusIgnoreCase("STOP");
+        return plcPassive + lineStop;
+    }
+
+    // recent activities (tek listede, zamana göre DESC, limit kadar)
+    public List<Activity> getRecentActivities(int limit) {
+        var recentPlc = plcLogRepository.findTop10ByOrderByProcDateDesc().stream()
+                .map(p -> new Activity(
+                        p.getProcDate(),
+                        "PLC",
+                        p.getPlcLogId().getPlcId() + " → " + safe(p.getStatus())
+                ));
+
+        var recentLine = lineLogRepository.findTop10ByOrderByProcDateDesc().stream()
+                .map(l -> new Activity(
+                        l.getProcDate(),
+                        "LINE",
+                        "Line " + l.getLineLogId().getLineId() + " → " + safe(l.getStatus())
+                ));
+
+        return Stream.concat(recentPlc, recentLine)
+                .sorted(Comparator.comparing(Activity::getTime).reversed())
+                .limit(limit)
+                .toList();
+    }
+
+    // küçük yardımcı (null status olursa boş gelmesin)
+    private static String safe(String s) {
+        return s == null ? "-" : s;
+    }
+
 }

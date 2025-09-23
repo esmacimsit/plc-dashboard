@@ -32,4 +32,12 @@ public class BarcodeDataService {
                         Collectors.toList()
                 ));
     }
+
+    public long getTotalBarcodeCount() {
+        return barcodeDataRepository.count();
+    }
+
+    public long getBarcodeCountByLine(String lineId) {
+        return barcodeDataRepository.countByLineId(lineId);
+    }
 }
