@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
     @GetMapping("/") // GET request, triggered when page loads or user refreshes
     public String examplePage(Model model) { // you can reach here on thymeleaf with ${}
-        model.addAttribute("message", "Home Page of Analysis Dashboard");
+        model.addAttribute("message", "Welcome to Analysis Dashboard");
         return "index"; // display it on index.html
     }
 }
