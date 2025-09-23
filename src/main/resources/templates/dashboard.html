@@ -4,15 +4,9 @@
     <meta charset="UTF-8">
     <title>Sistek PLC Dashboard</title>
 
-    <!-- Harici CSS -->
     <link rel="stylesheet" th:href="@{/css/dashboard.css(v=${#dates.createNow().time})}">
 </head>
 <body>
-
-<!-- Professional PLC Header -->
-
-<!-- Return Home Button -->
-
 
 <div class="plc-header">
 
@@ -34,7 +28,6 @@
     </div>
 </div>
 
-<!-- Dashboard -->
 <div class="dashboard">
     <div th:each="lineText, iter : ${lineTexts}" class="line-column">
         <div class="line-header"
@@ -66,7 +59,6 @@
     </div>
 </div>
 
-<!-- Harici JS -->
 <script defer th:src="@{/js/dashboard.js(v=${#dates.createNow().time})}"></script>
 </body>
 </html>

@@ -4,296 +4,47 @@
     <meta charset="UTF-8">
     <title>Sistek PLC Logs</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 20px;
-            background: #f8f9fa;
-        }
-
-        /* Return Home Button */
-        .return-home-btn {
-            position: absolute;
-            top: 25px;
-            right: 30px;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s ease;
-            z-index: 100;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-        }
-
-        .return-home-btn:hover {
-            background: #2980b9;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.4);
-        }
-
-        /* Logs Container */
-        .logs-container {
-            background: white;
-            border-radius: 12px;
-            padding: 25px 30px;
-            margin: 0 auto;
-            max-width: 95%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            border: 1px solid #e9ecef;
-            position: relative;
-        }
-
-        .logs-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin: 0 0 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-right: 60px; /* Buton için alan */
-        }
-
-        .logs-title-icon {
-            font-size: 2rem;
-            color: #3498db;
-        }
-
-        .logs-subtitle {
-            color: #6c757d;
-            font-size: 1rem;
-            margin: -10px 0 20px 0;
-            font-weight: 400;
-            padding-right: 60px; /* Buton için alan */
-        }
-
-        /* Filter Styles */
-        .filter-form {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #e9ecef;
-        }
-
-        .filter-row {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .filter-label {
-            font-weight: 500;
-            color: #495057;
-            font-size: 0.95rem;
-        }
-
-        .filter-select {
-            padding: 8px 12px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            background: white;
-            font-size: 0.9rem;
-            color: #495057;
-            cursor: pointer;
-            transition: border-color 0.3s ease;
-        }
-
-        .filter-select:hover {
-            border-color: #3498db;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        /* Table Styles */
-        .logs-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .logs-table th {
-            background: #3498db;
-            color: white;
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: none;
-        }
-
-        .logs-table th:first-child {
-            border-radius: 6px 0 0 0;
-        }
-
-        .logs-table th:last-child {
-            border-radius: 0 6px 0 0;
-        }
-
-        .logs-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e9ecef;
-            font-size: 0.9rem;
-            color: #495057;
-        }
-
-        .logs-table tbody tr {
-            transition: background-color 0.2s ease;
-        }
-
-        .logs-table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .logs-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Status badges */
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-align: center;
-            display: inline-block;
-            min-width: 60px;
-        }
-
-        .status-RUN { background: #d4edda; color: #155724; }
-        .status-STOP { background: #f8d7da; color: #721c24; }
-        .status-ACTIVE { background: #d1ecf1; color: #0c5460; }
-
-        /* Source badges */
-        .source-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-align: center;
-            display: inline-block;
-            min-width: 50px;
-        }
-
-        .source-PLC { background: #e8f4fd; color: #004085; }
-        .source-LINE { background: #fff3cd; color: #856404; }
-
-        /* Log count info */
-        .log-count {
-            background: #3498db;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-left: auto;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logs-container {
-                padding: 20px;
-                margin: 0 auto 20px;
-            }
-
-            .logs-title {
-                font-size: 1.5rem;
-                padding-right: 50px;
-            }
-
-            .logs-subtitle {
-                padding-right: 50px;
-            }
-
-            .filter-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .logs-table {
-                font-size: 0.8rem;
-            }
-
-            .logs-table th,
-            .logs-table td {
-                padding: 8px 10px;
-            }
-
-            .return-home-btn {
-                top: 20px;
-                right: 20px;
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                margin: 10px;
-            }
-
-            .logs-container {
-                padding: 15px;
-                border-radius: 8px;
-            }
-
-            .return-home-btn {
-                top: 15px;
-                right: 15px;
-                width: 32px;
-                height: 32px;
-                font-size: 0.9rem;
-            }
-
-            .logs-title {
-                padding-right: 45px;
-                font-size: 1.3rem;
-            }
-
-            .logs-subtitle {
-                padding-right: 45px;
-                font-size: 0.9rem;
-            }
-        }
+        :root{--panel-bg:rgba(255,255,255,.85);--panel-border:rgba(0,0,0,.06);--radius:16px;--brand:#0a6cf1;--ink:#0e2a47}
+        body{font-family:'Segoe UI',Arial,sans-serif;margin:20px;background:linear-gradient(135deg,#0e2a47 0%,#112b3c 30%,#0a6cf1 120%) fixed}
+        .return-home-btn{position:absolute;top:25px;right:30px;background:var(--brand);color:#fff;border:none;border-radius:999px;padding:12px;width:48px;height:48px;font-size:1.1rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(10,108,241,.25)}
+        .return-home-btn:hover{background:#0956c0}
+        .logs-container{background:var(--panel-bg);border:1px solid var(--panel-border);border-radius:var(--radius);padding:25px 30px;margin:0 auto;max-width:95%;box-shadow:0 4px 14px rgba(0,0,0,.12);position:relative}
+        .logs-title{font-size:1.8rem;font-weight:600;color:var(--ink);margin:0 0 20px 0;display:flex;align-items:center;gap:12px;padding-right:60px}
+        .logs-title-icon{font-size:2rem;color:var(--brand);background:rgba(10,108,241,.08);width:50px;height:50px;border-radius:12px;display:grid;place-items:center}
+        .logs-subtitle{color:var(--ink);opacity:.8;font-size:1rem;margin:-10px 0 20px 0;font-weight:400;padding-right:60px}
+        .filter-form{background:rgba(255,255,255,.9);border:1px solid var(--panel-border);border-radius:var(--radius);padding:20px;margin-bottom:25px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+        .filter-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+        .filter-group{display:flex;align-items:center;gap:10px}
+        .filter-label{font-weight:500;color:var(--ink);opacity:.9;font-size:.95rem}
+        .filter-select{padding:8px 12px;border:1px solid rgba(0,0,0,.12);border-radius:8px;background:#fff;font-size:.9rem;color:var(--ink);cursor:pointer}
+        .filter-select:hover{border-color:var(--brand)}
+        .filter-select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,108,241,.15)}
+        .logs-table{width:100%;border-collapse:collapse;margin-top:15px;border-radius:var(--radius);overflow:hidden;background:rgba(255,255,255,.75);border:1px solid var(--panel-border);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+        .logs-table th{background:var(--brand);color:#fff;padding:12px 15px;text-align:left;font-weight:600;font-size:.9rem;border:none}
+        .logs-table td{padding:12px 15px;border-bottom:1px solid rgba(0,0,0,.06);font-size:.9rem;color:var(--ink);background:rgba(255,255,255,.9)}
+        .logs-table tbody tr:hover{background:rgba(10,108,241,.06)}
+        .status-badge,.source-badge{padding:6px 12px;border-radius:999px;font-size:.8rem;font-weight:500;text-align:center;display:inline-block;min-width:70px;border:1px solid rgba(0,0,0,.08);background:#fff}
+        .status-RUN{background:rgba(39,174,96,.12);color:#27ae60;border-color:rgba(39,174,96,.2)}
+        .status-STOP{background:rgba(231,76,60,.12);color:#e74c3c;border-color:rgba(231,76,60,.2)}
+        .status-ACTIVE{background:rgba(52,152,219,.12);color:#3498db;border-color:rgba(52,152,219,.2)}
+        .source-PLC{background:rgba(232,244,253,.9);color:var(--brand)}
+        .source-LINE{background:rgba(255,243,205,.9);color:#856404}
+        .log-count{background:var(--brand);color:#fff;padding:8px 16px;border-radius:999px;font-size:.9rem;font-weight:500;margin-left:auto;box-shadow:0 2px 8px rgba(10,108,241,.2)}
+        @media (max-width:768px){.logs-container{padding:20px;margin:0 auto 20px}.logs-title{font-size:1.5rem;padding-right:50px}.logs-subtitle{padding-right:50px}.filter-row{flex-direction:column;align-items:flex-start;gap:15px}.logs-table{font-size:.8rem}.logs-table th,.logs-table td{padding:8px 10px}.return-home-btn{top:20px;right:20px;width:42px;height:42px;font-size:1rem}.log-count{margin-left:0;align-self:flex-start}}
+        @media (max-width:480px){body{margin:10px}.logs-container{padding:15px;border-radius:12px}.return-home-btn{top:15px;right:15px;width:38px;height:38px;font-size:.9rem}.logs-title{padding-right:45px;font-size:1.3rem}.logs-subtitle{padding-right:45px}.filter-form{padding:15px}.filter-group{flex-direction:column;align-items:flex-start;gap:5px}}
     </style>
 </head>
 <body>
 
-<!-- Logs Container -->
 <div class="logs-container">
-    <!-- Return Home Button - Container içinde -->
-    <a th:href="@{/}" class="return-home-btn" title="Home">
-        ←
-    </a>
+    <a th:href="@{/}" class="return-home-btn" title="Home">←</a>
 
     <h2 class="logs-title">
+        <i class="logs-title-icon">📊</i>
         Log Records
     </h2>
     <p class="logs-subtitle">PLC Monitoring System - Real-time log tracking</p>
 
-    <!-- Filters -->
     <form method="get" action="/logs" class="filter-form">
         <div class="filter-row">
             <div class="filter-group">
@@ -314,13 +65,10 @@
                 </select>
             </div>
 
-            <div class="log-count" th:text="'Total: ' + ${logs.size()} + ' logs'">
-                Total: 150 logs
-            </div>
+            <div class="log-count" th:text="'Total: ' + ${logs.size()} + ' logs'">Total: 150 logs</div>
         </div>
     </form>
 
-    <!-- Logs Table -->
     <table class="logs-table">
         <thead>
         <tr>
@@ -334,16 +82,11 @@
         <tbody>
         <tr th:each="r : ${logs}">
             <td th:text="${#temporals.format(r.procDate, 'dd.MM.yyyy HH:mm:ss')}">2025-07-31T08:30:10</td>
-            <td>
-                    <span th:classappend="'source-badge source-' + ${r.source}"
-                          th:text="${r.source}">PLC</span>
-            </td>
+            <td><span th:classappend="'source-badge source-' + ${r.source}" th:text="${r.source}">PLC</span></td>
             <td th:text="${r.id}">LINE-1</td>
             <td th:text="${r.seqNo}">23010</td>
             <td>
-                    <span th:if="${r.status}"
-                          th:classappend="'status-badge status-' + ${r.status}"
-                          th:text="${r.status}">RUN</span>
+                <span th:if="${r.status}" th:classappend="'status-badge status-' + ${r.status}" th:text="${r.status}">RUN</span>
                 <span th:unless="${r.status}" class="status-badge">-</span>
             </td>
         </tr>
@@ -351,5 +94,8 @@
     </table>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{console.log("Logs page loaded.")})
+</script>
 </body>
 </html>

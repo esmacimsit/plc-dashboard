@@ -6,12 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let svgContent = '';
 
-        // Beyaz arkaplan
         svgContent += '<rect width="100%" height="100%" fill="white" stroke="#ddd" stroke-width="1"/>';
 
         let x = 3;
 
-        // Başlangıç çizgisi
         svgContent += `<rect x="${x}" y="5" width="1" height="25" fill="black"/>`;
         x += 1.5;
 
@@ -34,10 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
             x += 0.3;
         }
 
-        // Bitiş çizgisi
         svgContent += `<rect x="${x}" y="5" width="1" height="25" fill="black"/>`;
 
-        // Barkod numarası
         svgContent += `<text x="${width/2}" y="35" text-anchor="middle" font-family="Courier New" font-size="7" fill="#333">${barcodeText}</text>`;
 
         svg.innerHTML = svgContent;

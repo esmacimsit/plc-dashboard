@@ -1,0 +1,59 @@
+:root {
+    --glass-bg: rgba(255,255,255,.65);
+    --blur: blur(8px);
+    --radius: 18px;
+}
+
+body {
+    background: linear-gradient(135deg,#0e2a47 0%, #112b3c 30%, #0a6cf1 120%) fixed;
+}
+
+.hero {
+    background:
+        radial-gradient(1000px 400px at 10% -10%, rgba(255,255,255,.25), transparent),
+        radial-gradient(800px 300px at 110% -20%, rgba(255,255,255,.18), transparent);
+    border-radius: var(--radius);
+    color: #0e2a47;
+}
+
+.glass-card {
+    backdrop-filter: var(--blur);
+    background: var(--glass-bg);
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    transition: transform .15s, box-shadow .15s;
+}
+
+.glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(0,0,0,.22);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
+    background: #0a6cf11a;
+    color: #0a6cf1;
+}
+
+.stat-value {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.btn-pill {
+    border-radius: 999px;
+    padding: .7rem 1.1rem;
+    font-weight: 600;
+}
+
+footer {
+    color: #dbe7ff;
+    opacity: .85;
+}
