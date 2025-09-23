@@ -87,17 +87,15 @@
             background: #f8f9fa;
             border-radius: 4px;
         }
-        .error-title {
-            color: #dc3545;
-            font-weight: bold;
-            text-align: center;
-            margin: 5px 0;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
-<h1>Barcode Error Dashboard</h1>
+
+<h1>PLC</h1>
+<span th:text="${plcId}"></span>
+<br>
+<br>
+<span th:text="${plcStatus}"></span>
 
 <div class="dashboard">
     <div th:each="lineText, iter : ${lineTexts}" class="line-column">
@@ -117,14 +115,12 @@
                              width="280" height="80"
                              xmlns="http://www.w3.org/2000/svg">
                         </svg>
-                        <div class="error-title">Barcode Error</div>
                     </div>
                     <div class="barcode-info">
                         <strong>Status:</strong> <span class="status-error" th:text="${barcode.status}"></span><br>
                         <strong>Date:</strong> <span
                             th:text="${#temporals.format(barcode.lastStatusDate, 'dd.MM.yyyy HH:mm')}"></span><br>
-                        <strong>Error:</strong> <span style="font-size:11px; display:block; margin-top:4px;"
-                                                      th:text="${barcode.apiResult}"></span>
+                        <!--                        <strong>Error:</strong> <span style="font-size:11px; display:block; margin-top:4px;" th:text="${barcode.apiResult}"></span>-->
                     </div>
                 </div>
             </div>
