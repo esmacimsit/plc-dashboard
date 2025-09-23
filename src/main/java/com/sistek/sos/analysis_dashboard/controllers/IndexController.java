@@ -31,6 +31,9 @@ public class IndexController {
         model.addAttribute("totalBarcodes", barcodeDataService.getTotalBarcodeCount());
 
         model.addAttribute("recentActivities", logService.getRecentActivities(5));
+
+        model.addAttribute("now", java.time.LocalDateTime.now());
+
         return "index"; // display it on index.html
     }
 }

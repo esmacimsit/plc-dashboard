@@ -38,6 +38,6 @@ public class BarcodeDataService {
     }
 
     public long getBarcodeCountByLine(String lineId) {
-        return barcodeDataRepository.countByLineId(lineId);
+        return barcodeDataRepository.countByBarcodeId_LineId(lineId);
     }
 }

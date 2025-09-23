@@ -11,5 +11,5 @@ import java.util.List;
 public interface BarcodeDataRepository extends JpaRepository<BarcodeData, BarcodeDataId> {
     List<BarcodeData> findAllByOrderByBarcodeIdLineIdAsc();
 
-    long countByLineId(String lineId);
+    long countByBarcodeId_LineId(String lineId);
 }
