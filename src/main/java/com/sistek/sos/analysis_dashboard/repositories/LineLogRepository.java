@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface LineLogRepository extends JpaRepository<LineLog, LineLogId> {
-    List<LineLog> findTop200ByOrderByProcDateDesc();
+    List<LineLog> findAllByOrderByProcDateDesc();
 }

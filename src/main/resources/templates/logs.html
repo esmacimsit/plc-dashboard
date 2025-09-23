@@ -9,10 +9,33 @@
         th,td{border:1px solid #ddd;padding:8px;font-size:14px}
         th{background:#f3f4f6;text-align:left}
         h2{margin:8px 0 12px}
+        .bar{margin:12px 0}
     </style>
 </head>
 <body>
 <h2>Unified Logs (PLC + LINE)</h2>
+
+<!-- Filtre barı -->
+<form method="get" action="/logs" class="bar">
+    <label>Source:</label>
+    <select name="source" onchange="this.form.submit()">
+        <option value="" th:selected="${source == null}">All</option>
+        <option value="PLC" th:selected="${source == 'PLC'}">PLC</option>
+        <option value="LINE" th:selected="${source == 'LINE'}">LINE</option>
+    </select>
+
+    <!-- Source LINE ise status filtresi açılır -->
+    <span th:if="${source == 'LINE'}" style="margin-left:12px;">
+        <label>Status:</label>
+        <select name="status" onchange="this.form.submit()">
+            <option value="" th:selected="${status == null}">All</option>
+            <option value="RUN" th:selected="${status == 'RUN'}">RUN</option>
+            <option value="STOP" th:selected="${status == 'STOP'}">STOP</option>
+        </select>
+    </span>
+</form>
+
+<!-- Log tablosu -->
 <table>
     <thead>
     <tr>
@@ -25,11 +48,11 @@
     </thead>
     <tbody>
     <tr th:each="r : ${logs}">
-        <td th:text="${r.procDate}">2025-07-31T08:30:10Z</td>
+        <td th:text="${r.procDate}">2025-07-31T08:30:10</td>
         <td th:text="${r.source}">PLC</td>
-        <td th:text="${r.id}">192.168.1.181</td>
+        <td th:text="${r.id}">LINE-1</td>
         <td th:text="${r.seqNo}">23010</td>
-        <td th:text="${r.status}">ACTIVE</td>
+        <td th:text="${r.status}">RUN</td>
     </tr>
     </tbody>
 </table>

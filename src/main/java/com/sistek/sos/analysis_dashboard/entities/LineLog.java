@@ -24,7 +24,7 @@ public class LineLog {
     @Column(name = "status", nullable = false)
     private String status;
 
-    public String getLineId() {
-        return lineLogId != null ? lineLogId.getLineId() : null;
-    }
+//    public String getLineId() {
+//        return lineLogId != null ? lineLogId.getLineId() : null;
+//    }
 }

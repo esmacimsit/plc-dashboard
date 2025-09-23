@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PlcLogRepository extends JpaRepository<PlcLog, PlcLogId> {
-    List<PlcLog> findTop200ByOrderByProcDateDesc();
+    List<PlcLog> findAllByOrderByProcDateDesc();
 }
