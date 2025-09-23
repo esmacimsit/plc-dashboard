@@ -21,7 +21,6 @@ public class LogService {
         this.plcLogRepository = plcLogRepository;
     }
 
-    // 3) Birleşik liste (status sadece LINE için uygulanır)
     public List<UnifiedLog> getUnifiedLogs(String source,
                                            String lineId,
                                            String status,
@@ -37,7 +36,6 @@ public class LogService {
                 .toList();
     }
 
-    // 1) PLC logs (status yok)
     public List<UnifiedLog> getPlcLogs(LocalDateTime start, LocalDateTime end) {
         return plcLogRepository.findAllByOrderByProcDateDesc().stream()
                 .filter(p -> start == null || !p.getProcDate().isBefore(start))
@@ -51,7 +49,6 @@ public class LogService {
                 .toList();
     }
 
-    // 2) LINE logs (status + lineId filtreleri)
     public List<UnifiedLog> getLineLogs(LocalDateTime start,
                                         LocalDateTime end,
                                         String lineId,
@@ -74,20 +71,16 @@ public class LogService {
                 .toList();
     }
 
-    // toplam log sayısı (PLC + LINE)
     public long getTotalLogCount() {
         return plcLogRepository.count() + lineLogRepository.count();
     }
 
-    // aktif hata sayısı (basit kural)
-// PLC: PASSIVE hata kabul, LINE: STOP hata kabul
     public long getActiveErrorCount() {
         long plcPassive = plcLogRepository.countByStatusIgnoreCase("PASSIVE");
         long lineStop = lineLogRepository.countByStatusIgnoreCase("STOP");
         return plcPassive + lineStop;
     }
 
-    // recent activities (tek listede, zamana göre DESC, limit kadar)
     public List<Activity> getRecentActivities(int limit) {
         var recentPlc = plcLogRepository.findTop10ByOrderByProcDateDesc().stream()
                 .map(p -> new Activity(
@@ -109,7 +102,6 @@ public class LogService {
                 .toList();
     }
 
-    // küçük yardımcı (null status olursa boş gelmesin)
     private static String safe(String s) {
         return s == null ? "-" : s;
     }

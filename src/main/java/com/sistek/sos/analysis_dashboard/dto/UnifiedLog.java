@@ -1,10 +1,10 @@
 package com.sistek.sos.analysis_dashboard.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class UnifiedLog {
     private String source;   // plc or line
     private String id;       // plcId or lineId

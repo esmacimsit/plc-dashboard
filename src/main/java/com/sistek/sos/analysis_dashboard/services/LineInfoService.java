@@ -64,10 +64,10 @@ public class LineInfoService {
         return lineInfoRepository.countByStatusIgnoreCase("STOP");
     }
 
-    public long countByStatus(String status) {
-        return (status == null || status.isBlank())
-                ? lineInfoRepository.count()
-                : lineInfoRepository.countByStatusIgnoreCase(status);
-    }
+//    public long countByStatus(String status) {
+//        return (status == null || status.isBlank())
+//                ? lineInfoRepository.count()
+//                : lineInfoRepository.countByStatusIgnoreCase(status);
+//    }
 
 }

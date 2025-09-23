@@ -37,7 +37,7 @@ public class BarcodeDataService {
         return barcodeDataRepository.count();
     }
 
-    public long getBarcodeCountByLine(String lineId) {
-        return barcodeDataRepository.countByBarcodeId_LineId(lineId);
-    }
+//    public long getBarcodeCountByLine(String lineId) {
+//        return barcodeDataRepository.countByBarcodeId_LineId(lineId);
+//    }
 }

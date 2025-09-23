@@ -1,7 +1,10 @@
 package com.sistek.sos.analysis_dashboard.dto;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class Activity {
     private final LocalDateTime time;
     private final String source;  // "PLC" | "LINE"
@@ -13,15 +16,15 @@ public class Activity {
         this.message = message;
     }
 
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+//    public LocalDateTime getTime() {
+//        return time;
+//    }
+//
+//    public String getSource() {
+//        return source;
+//    }
+//
+//    public String getMessage() {
+//        return message;
+//    }
 }
